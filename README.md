@@ -62,4 +62,4 @@ A jelszavak és felhasználónevek egy `data.txt` fájlban vannak eltárolva egy
 ## 🪟 Használat
 1. Futtasd a `main.py` fájlt:
    ```bash
-   python main.py
+   py main.py
