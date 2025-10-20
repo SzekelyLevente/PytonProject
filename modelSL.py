@@ -1,13 +1,13 @@
 import os
 
-class PasswordModel:
+class PasswordModelSL:
     def __init__(self, filename="data.txt"):
         self.filename = filename
         self.items=[]
         if not os.path.exists(self.filename):
             open(self.filename, "w").close()
 
-    def load(self):
+    def loadSL(self):
         items = []
         with open(self.filename, "r", encoding="utf-8") as f:
             for line in f:
@@ -17,24 +17,24 @@ class PasswordModel:
                     items.append((name, pw))
         return items
 
-    def save(self, data):
+    def saveSL(self, data):
         with open(self.filename, "w", encoding="utf-8") as f:
             for name, pw in data:
                 f.write(f"{name}:{pw}\n")
 
-    def add(self, name, password):
-        data = self.load()
+    def addSL(self, name, password):
+        data = self.loadSL()
         data.append((name, password))
-        self.save(data)
+        self.saveSL(data)
 
-    def delete(self, index):
-        data = self.load()
+    def deleteSL(self, index):
+        data = self.loadSL()
         if 0 <= index < len(data):
             del data[index]
-        self.save(data)
+        self.saveSL(data)
 
-    def update(self, index, new_name, new_pw):
-        data = self.load()
+    def updateSL(self, index, new_name, new_pw):
+        data = self.loadSL()
         if 0 <= index < len(data):
             data[index] = (new_name, new_pw)
-        self.save(data)
+        self.saveSL(data)

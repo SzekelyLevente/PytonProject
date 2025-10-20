@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import os
-from model import PasswordModel
-from Password_gen import generate_password
+from modelSL import PasswordModelSL
+from Password_genSL import generate_passwordSL
 
 PASSWORD_FILE = "pwd.txt"
 
@@ -57,7 +57,7 @@ def login_window(root):
 def open_main_window(root):
     win = tk.Toplevel(root)
     win.title("Jelszókezelő")
-    model = PasswordModel()
+    model = PasswordModelSL()
 
     tk.Label(win, text="Mentett bejegyzések:").pack(pady=5)
     listbox = tk.Listbox(win, width=40, height=10)
@@ -65,7 +65,7 @@ def open_main_window(root):
 
     def refresh():
         listbox.delete(0, tk.END)
-        for name, _ in model.load():
+        for name, _ in model.loadSL():
             listbox.insert(tk.END, name)
 
     def add_entry():
@@ -84,7 +84,7 @@ def open_main_window(root):
             name = name_entry.get().strip()
             pw = pw_entry.get().strip()
             if name and pw:
-                model.add(name, pw)
+                model.addSL(name, pw)
                 name_entry.delete(0, tk.END)
                 pw_entry.delete(0, tk.END)
                 messagebox.showinfo("Létrehozás","Sikeres létrehozás!")
@@ -102,7 +102,7 @@ def open_main_window(root):
         except IndexError:
             messagebox.showwarning("Hiba", "Válassz ki egy bejegyzést!")
             return
-        items=model.load()
+        items=model.loadSL()
         name, pw=items[index]
         update_win = tk.Toplevel(win)
         update_win.title("Bejegyzés módosítása")
@@ -121,11 +121,11 @@ def open_main_window(root):
             new_name = name_entry.get().strip()
             new_pw = pw_entry.get().strip()
             if new_name and new_pw:
-                model.update(index, new_name, new_pw)
+                model.updateSL(index, new_name, new_pw)
                 refresh()
                 name_entry.delete(0, tk.END)
                 pw_entry.delete(0, tk.END)
-                messagebox.showinfo("Létrehozás", "Sikeres létrehozás!")
+                messagebox.showinfo("Létrehozás", "Sikeres módosítás!")
             else:
                 messagebox.showerror("Hiba", "Egyik mező sem lehet üres!")
 
@@ -140,7 +140,7 @@ def open_main_window(root):
             messagebox.showwarning("Hiba", "Válassz ki egy bejegyzést!")
             return
         if messagebox.askyesno("Törlés", "Biztosan törölni szeretnéd?"):
-            model.delete(index)
+            model.deleteSL(index)
             refresh()
 
     def show_password():
@@ -149,7 +149,7 @@ def open_main_window(root):
         except IndexError:
             messagebox.showwarning("Hiba", "Válassz ki egy bejegyzést!")
             return
-        data = model.load()
+        data = model.loadSL()
         name, pw = data[index]
         messagebox.showinfo("jelszó", f"{name} jelszava: {pw}")
 
@@ -179,7 +179,7 @@ def open_main_window(root):
             except ValueError:
                 messagebox.showerror("Hiba", "A hossz szám legyen!")
                 return
-            pw = generate_password(length, use_upper.get(), use_digits.get(), use_symbols.get())
+            pw = generate_passwordSL(length, use_upper.get(), use_digits.get(), use_symbols.get())
             result_label.config(text=pw)
 
         def copy_pw():
